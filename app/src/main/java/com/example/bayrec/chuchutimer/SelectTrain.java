@@ -48,27 +48,15 @@ public class SelectTrain extends AppCompatActivity
         UpdateTime(hour, minute);
     }
 
-
-
-    public void checkTrain(View v){
-
-        Log.v("Melung1", departure);
-        Log.v("Melung2", arrival);
-
+    public void checkTrain(View v)
+    {
         EditText et = (EditText) findViewById(R.id.FromEditText);
         departure = et.getText().toString();
 
         et = (EditText) findViewById(R.id.ToEditText);
         arrival = et.getText().toString();
 
-        Log.v("Melung1", departure);
-        Log.v("Melung2", arrival);
-
-        if (departure != "" && arrival != ""){
-            searchTrains(v);
-        }
-        else{
-            Log.v("fuck", "fuck");
+        if (departure.isEmpty() || arrival.isEmpty()){
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Meldung");
             alertDialog.setMessage("Sie haben nicht alles ausgefüllt oder eine falsche Eingabe getätigt!");
@@ -80,6 +68,8 @@ public class SelectTrain extends AppCompatActivity
                     });
             alertDialog.show();
         }
+        else
+            searchTrains(v);
     }
 
     public void searchTrains(View v){
