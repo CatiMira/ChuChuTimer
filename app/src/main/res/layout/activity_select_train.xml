@@ -97,6 +97,7 @@
         android:text="Suchen"
         android:textSize="20dp"
         android:id="@+id/button"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:onClick="checkTrains"/>
 
 </RelativeLayout>

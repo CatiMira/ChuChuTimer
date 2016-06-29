@@ -83,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/LaufZeit"
+        android:id="@+id/laufZeit"
         android:layout_alignTop="@+id/textView13"
         android:layout_alignStart="@+id/reiseZeit" />
 

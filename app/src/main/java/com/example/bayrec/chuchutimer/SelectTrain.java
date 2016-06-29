@@ -3,9 +3,11 @@ package com.example.bayrec.chuchutimer;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -38,6 +40,20 @@ public class SelectTrain extends AppCompatActivity
 
         UpdateDate(year, month, day);
         UpdateTime(hour, minute);
+    }
+
+    public void checkTrains(View v){
+        boolean bla = true;
+        if (bla){
+            searchTrains(v);
+        }
+        else{
+            Log.v("ChuChuTime", "nope");
+        }
+    }
+    public void searchTrains(View v){
+        Intent intent = new Intent(SelectTrain.this, SelectTime.class);
+        this.startActivity(intent);
     }
 
     public void createCalendar(View v)
