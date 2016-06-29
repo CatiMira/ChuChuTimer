@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".NewAlarm" />
-        <activity android:name=".SelectTrain"></activity>
+        <activity android:name=".SelectTrain" />
+        <activity android:name=".SelectTime"></activity>
     </application>
 
 </manifest>
