@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,13 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.bayrec.chuchutimer.MainActivity">
 
-        <ImageButton
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/addButton"
-            android:background="@drawable/unnamed"
-            android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" />
-
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/addButton"
+        android:background="@drawable/unnamed"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
