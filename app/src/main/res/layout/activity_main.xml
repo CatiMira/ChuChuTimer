@@ -14,7 +14,7 @@
         android:layout_height="75dp"
         android:id="@+id/addButton"
         android:background="@drawable/unnamed"
-        android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
