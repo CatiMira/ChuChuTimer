@@ -78,7 +78,8 @@
         android:ems="10"
         android:id="@+id/DateTextEditor"
         android:layout_alignTop="@+id/DateTextView"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="createCalendar" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -87,7 +88,8 @@
         android:ems="10"
         android:id="@+id/TimeEditText"
         android:layout_alignTop="@+id/TimeTextView"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="createTime" />
 
     <Button
         android:layout_width="fill_parent"
