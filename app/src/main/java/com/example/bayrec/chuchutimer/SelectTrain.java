@@ -3,13 +3,18 @@ package com.example.bayrec.chuchutimer;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -18,6 +23,7 @@ import java.util.Timer;
 
 public class SelectTrain extends AppCompatActivity
 {
+    private String departure, arrival;
     private int year, month, day;
     private int hour, minute;
     // static final int DIALOG_ID = 0;
@@ -42,17 +48,51 @@ public class SelectTrain extends AppCompatActivity
         UpdateTime(hour, minute);
     }
 
-    public void checkTrains(View v){
-        boolean bla = true;
-        if (bla){
+
+
+    public void checkTrain(View v){
+
+        Log.v("Melung1", departure);
+        Log.v("Melung2", arrival);
+
+        EditText et = (EditText) findViewById(R.id.FromEditText);
+        departure = et.getText().toString();
+
+        et = (EditText) findViewById(R.id.ToEditText);
+        arrival = et.getText().toString();
+
+        Log.v("Melung1", departure);
+        Log.v("Melung2", arrival);
+
+        if (departure != "" && arrival != ""){
             searchTrains(v);
         }
         else{
-            Log.v("ChuChuTime", "nope");
+            Log.v("fuck", "fuck");
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Meldung");
+            alertDialog.setMessage("Sie haben nicht alles ausgefüllt oder eine falsche Eingabe getätigt!");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Okay",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
         }
     }
+
     public void searchTrains(View v){
         Intent intent = new Intent(SelectTrain.this, SelectTime.class);
+
+        intent.putExtra("departure", departure);
+        intent.putExtra("arrival", arrival);
+        intent.putExtra("year", year);
+        intent.putExtra("month", month);
+        intent.putExtra("day", day);
+        intent.putExtra("hour", hour);
+        intent.putExtra("minute", minute);
+
         this.startActivity(intent);
     }
 
@@ -105,5 +145,6 @@ public class SelectTrain extends AppCompatActivity
         TextView tv = (TextView) findViewById(R.id.TimeEditText);
         tv.setText(hour + ":" + minute);
     }
+
 }
 

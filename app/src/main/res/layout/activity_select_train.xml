@@ -30,6 +30,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/FromEditText"
         android:ems="10"
         android:layout_alignTop="@+id/FromTextView"
         android:layout_alignParentEnd="true" />
@@ -37,7 +38,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText5"
+        android:id="@+id/ToEditText"
         android:ems="10"
         android:layout_alignTop="@+id/ToTextView"
         android:layout_alignParentEnd="true"/>
@@ -95,9 +96,8 @@
         android:layout_width="fill_parent"
         android:layout_height="70dp"
         android:text="Suchen"
-        android:textSize="20dp"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
-        android:onClick="checkTrains"/>
+        android:textSize="20sp"
+        android:id="@+id/search"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

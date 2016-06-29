@@ -18,7 +18,7 @@
         <activity android:name=".NewAlarm" />
         <activity android:name=".SelectTrain" />
         <activity android:name=".SelectTime" />
-        <activity android:name=".ShowAlarm"></activity>
+        <activity android:name=".ShowAlarm" />
     </application>
 
 </manifest>

@@ -23,6 +23,7 @@ public class SelectTime extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_time);
 
+
         TextView so = (TextView) findViewById(R.id.Start);
         so.setText(StartOrt);
         TextView zo = (TextView) findViewById(R.id.Ziel);
