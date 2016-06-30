@@ -23,6 +23,11 @@ public class SelectTime extends AppCompatActivity {
 
     private static String StartOrt;
     private static String ZielOrt;
+    private static String Jahr;
+    private static String Monat;
+    private static String Tag;
+    private static String Stunde;
+    private static String Minute;
 
     private static String TAG = "Orte";
     private ProgressDialog mDialog;
@@ -36,14 +41,25 @@ public class SelectTime extends AppCompatActivity {
 
         StartOrt = intent.getStringExtra("departure");
         ZielOrt = intent.getStringExtra("arrival");
+        Jahr = intent.getStringExtra("year");
+        Monat = intent.getStringExtra("month");
+        Tag = intent.getStringExtra("day");
+        Stunde = intent.getStringExtra("hour");
+        Minute = intent.getStringExtra("minute");
+
+        String abfahrt = Jahr+"-"+Monat+"-"+Tag+"T"+Stunde+"%3A"+Minute;
 
         TextView so = (TextView) findViewById(R.id.Start);
         so.setText(StartOrt);
         TextView zo = (TextView) findViewById(R.id.Ziel);
         zo.setText(ZielOrt);
 
+        String bla = "http://transport.opendata.ch/v1/connections?from="+StartOrt+"&to="+ZielOrt+"&datetime="+abfahrt+"&limit=4";
+        Log.v("nigga",bla);
+
         mDialog = ProgressDialog.show(this, "Suche Zeiten", "Bitte warten...");
-        getTimes("http://transport.opendata.ch/v1/connections?from="+StartOrt+"&to="+ZielOrt+"&limit=3");
+        getTimes("http://transport.opendata.ch/v1/connections?from="+StartOrt+"&to="+ZielOrt+"&datetime="+abfahrt+"&limit=4");
+        //getTimes("http://transport.opendata.ch/v1/connections?from=Bern&to=Lausanne&datetime=2016-6-30T15%3A32&limit=4");
     }
     public void getTimes(String url){
         new AsyncTask<String, String, String>(){

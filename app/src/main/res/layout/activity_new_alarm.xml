@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/MinuteEditText"
+        android:id="@+id/editText"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/StartZeit" />
 
@@ -98,6 +98,5 @@
         android:id="@+id/speichern"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:textSize="20dp"
-        android:onClick="setTime"/>
+        android:textSize="20dp" />
 </RelativeLayout>

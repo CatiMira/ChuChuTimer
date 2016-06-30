@@ -77,11 +77,11 @@ public class SelectTrain extends AppCompatActivity
 
         intent.putExtra("departure", departure);
         intent.putExtra("arrival", arrival);
-        intent.putExtra("year", year);
-        intent.putExtra("month", month);
-        intent.putExtra("day", day);
-        intent.putExtra("hour", hour);
-        intent.putExtra("minute", minute);
+        intent.putExtra("year", String.valueOf(year));
+        intent.putExtra("month", String.valueOf(month));
+        intent.putExtra("day", String.valueOf(day));
+        intent.putExtra("hour", String.valueOf(hour));
+        intent.putExtra("minute", String.valueOf(minute));
 
         this.startActivity(intent);
     }
@@ -117,22 +117,27 @@ public class SelectTrain extends AppCompatActivity
     protected Dialog onCreateDialog(int id)
     {
         if (id == 0)
-            return new DatePickerDialog(this, dpickerListner, year, month, day);
+            return new DatePickerDialog(this, dpickerListner, year, month-1, day);
         if(id == 1)
             return new TimePickerDialog(this, tpickerListner, hour, minute, true);
 
         return null;
     }
 
-    private void UpdateDate(int year, int month, int day)
+    private void UpdateDate(int yearNow, int monthNow, int dayNow)
     {
+        year = yearNow;
+        month = monthNow+1;
+        day = dayNow;
         TextView tv = (TextView) findViewById(R.id.DateTextEditor);
         tv.setText(day + "." + month + "." +year);
     }
 
-    private void UpdateTime(int hour, int minute)
+    private void UpdateTime(int hourNow, int minuteNow)
     {
         TextView tv = (TextView) findViewById(R.id.TimeEditText);
+        hour = hourNow;
+        minute = minuteNow;
         tv.setText(hour + ":" + minute);
     }
 
