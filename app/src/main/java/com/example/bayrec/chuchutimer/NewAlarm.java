@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 public class NewAlarm extends AppCompatActivity {
 
     private static String StartOrt;
@@ -18,6 +20,12 @@ public class NewAlarm extends AppCompatActivity {
 
         Intent intent = getIntent();
         String zeiten = intent.getStringExtra("zeiten");
+        StartOrt = intent.getStringExtra("startort");
+        ZielOrt = intent.getStringExtra("zielort");
+
+        String[] temp = splitDate(zeiten);
+        StartOrtZeit = temp[0];
+        ZielOrtZeit = temp[1];
 
         TextView so = (TextView) findViewById(R.id.Start);
         so.setText(StartOrt);
@@ -27,5 +35,11 @@ public class NewAlarm extends AppCompatActivity {
         soz.setText(StartOrtZeit);
         TextView zoz = (TextView) findViewById(R.id.EndZeit);
         zoz.setText(ZielOrtZeit);
+    }
+
+    private String[] splitDate(String text) {
+        String[] temp = text.split(Pattern.quote("Dauer"));
+        return temp[0].split(Pattern.quote(" - "));
+
     }
 }

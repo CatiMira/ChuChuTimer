@@ -90,7 +90,7 @@
         android:id="@+id/editText"
         android:maxLength="3"
         android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/StartZeit" />
+        android:layout_alignEnd="@+id/textView2" />
 
     <Button
         android:layout_width="fill_parent"

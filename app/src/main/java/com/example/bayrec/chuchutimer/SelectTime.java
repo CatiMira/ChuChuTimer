@@ -89,8 +89,6 @@ public class SelectTime extends AppCompatActivity {
     }
     private void parseJson(String jsonstring){
 
-
-
         ArrayAdapter times = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         try {
             JSONObject  jsonRootObject = new JSONObject(jsonstring);
@@ -110,8 +108,9 @@ public class SelectTime extends AppCompatActivity {
                 start = fromtime.get("departure").toString();
                 ende = totime.get("arrival").toString();
 
-                start = splitAll(start);
-                ende = splitAll(ende);
+                start = splitDate(start);
+                ende = splitDate(ende);
+                duration = splitDuration(duration);
 
                 times.add(start+" - "+ende+"\nDauer: "+duration);
 
@@ -126,6 +125,8 @@ public class SelectTime extends AppCompatActivity {
                         Toast toast=Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT);
                         toast.show();
                         intent.putExtra("zeiten", selected);
+                        intent.putExtra("startort", StartOrt);
+                        intent.putExtra("zielort", ZielOrt);
                         startActivity(intent);
                     }
                 };
@@ -133,10 +134,15 @@ public class SelectTime extends AppCompatActivity {
             }
         } catch (JSONException e) {e.printStackTrace();}
     }
-    public String splitAll(String text){
+    public String splitDate(String text){
         String[] segs = text.split(Pattern.quote("T"));
         text = segs[1];
         segs = text.split(Pattern.quote(":00+"));
         return segs[0];
+    }
+    public String splitDuration(String text){
+        text = text.substring(0,text.length()-3);
+        text = text.substring(3);
+        return text;
     }
 }
