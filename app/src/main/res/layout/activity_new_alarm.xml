@@ -88,6 +88,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editText"
+        android:maxLength="3"
         android:layout_centerVertical="true"
         android:layout_toStartOf="@+id/StartZeit" />
 

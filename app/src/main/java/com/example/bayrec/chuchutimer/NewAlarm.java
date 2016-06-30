@@ -1,5 +1,6 @@
 package com.example.bayrec.chuchutimer;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -14,6 +15,9 @@ public class NewAlarm extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_alarm);
+
+        Intent intent = getIntent();
+        String zeiten = intent.getStringExtra("zeiten");
 
         TextView so = (TextView) findViewById(R.id.Start);
         so.setText(StartOrt);

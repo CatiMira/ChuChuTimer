@@ -6,9 +6,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -18,6 +21,7 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 public class SelectTime extends AppCompatActivity {
 
@@ -28,6 +32,9 @@ public class SelectTime extends AppCompatActivity {
     private static String Tag;
     private static String Stunde;
     private static String Minute;
+
+    String start = "";
+    String ende = "";
 
     private static String TAG = "Orte";
     private ProgressDialog mDialog;
@@ -54,12 +61,8 @@ public class SelectTime extends AppCompatActivity {
         TextView zo = (TextView) findViewById(R.id.Ziel);
         zo.setText(ZielOrt);
 
-        String bla = "http://transport.opendata.ch/v1/connections?from="+StartOrt+"&to="+ZielOrt+"&datetime="+abfahrt+"&limit=4";
-        Log.v("nigga",bla);
-
         mDialog = ProgressDialog.show(this, "Suche Zeiten", "Bitte warten...");
         getTimes("http://transport.opendata.ch/v1/connections?from="+StartOrt+"&to="+ZielOrt+"&datetime="+abfahrt+"&limit=4");
-        //getTimes("http://transport.opendata.ch/v1/connections?from=Bern&to=Lausanne&datetime=2016-6-30T15%3A32&limit=4");
     }
     public void getTimes(String url){
         new AsyncTask<String, String, String>(){
@@ -86,8 +89,7 @@ public class SelectTime extends AppCompatActivity {
     }
     private void parseJson(String jsonstring){
 
-        String start = "";
-        String ende = "";
+
 
         ArrayAdapter times = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         try {
@@ -108,11 +110,33 @@ public class SelectTime extends AppCompatActivity {
                 start = fromtime.get("departure").toString();
                 ende = totime.get("arrival").toString();
 
-                times.add(start+" "+ende+" "+duration);
+                start = splitAll(start);
+                ende = splitAll(ende);
+
+                times.add(start+" - "+ende+"\nDauer: "+duration);
 
                 ListView zeit = (ListView) findViewById(R.id.zeiten);
                 zeit.setAdapter(times);
+
+                AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView parent, View view, int position, long id) {
+                        Intent intent = new Intent(getApplicationContext(), NewAlarm.class);
+                        String selected = parent.getItemAtPosition(position).toString();
+                        Toast toast=Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT);
+                        toast.show();
+                        intent.putExtra("zeiten", selected);
+                        startActivity(intent);
+                    }
+                };
+                zeit.setOnItemClickListener(mListClickedHandler);
             }
         } catch (JSONException e) {e.printStackTrace();}
+    }
+    public String splitAll(String text){
+        String[] segs = text.split(Pattern.quote("T"));
+        text = segs[1];
+        segs = text.split(Pattern.quote(":00+"));
+        return segs[0];
     }
 }
