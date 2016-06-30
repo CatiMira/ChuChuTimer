@@ -23,15 +23,6 @@ public class SelectTime extends AppCompatActivity {
 
     private static String StartOrt;
     private static String ZielOrt;
-    private static String StartOrtZeit1;
-    private static String ZielOrtZeit1;
-    private static String ZeitDauer1;
-    private static String StartOrtZeit2;
-    private static String ZielOrtZeit2;
-    private static String ZeitDauer2;
-    private static String StartOrtZeit3;
-    private static String ZielOrtZeit3;
-    private static String ZeitDauer3;
 
     private static String TAG = "Orte";
     private ProgressDialog mDialog;
@@ -50,35 +41,17 @@ public class SelectTime extends AppCompatActivity {
         so.setText(StartOrt);
         TextView zo = (TextView) findViewById(R.id.Ziel);
         zo.setText(ZielOrt);
-        TextView soz1 = (TextView) findViewById(R.id.StartZeit1);
-        soz1.setText(StartOrtZeit1);
-        TextView soz2 = (TextView) findViewById(R.id.StartZeit2);
-        soz2.setText(StartOrtZeit2);
-        TextView soz3 = (TextView) findViewById(R.id.StartZeit3);
-        soz3.setText(StartOrtZeit3);
-        TextView zoz1 = (TextView) findViewById(R.id.EndZeit1);
-        zoz1.setText(ZielOrtZeit1);
-        TextView zoz2 = (TextView) findViewById(R.id.EndZeit2);
-        zoz2.setText(ZielOrtZeit2);
-        TextView zoz3 = (TextView) findViewById(R.id.EndZeit3);
-        zoz3.setText(ZielOrtZeit3);
-        TextView zd1 = (TextView) findViewById(R.id.Dauer1);
-        zd1.setText(ZeitDauer1);
-        TextView zd2 = (TextView) findViewById(R.id.Dauer2);
-        zd2.setText(ZeitDauer2);
-        TextView zd3 = (TextView) findViewById(R.id.Dauer3);
-        zd3.setText(ZeitDauer3);
 
-        mDialog = ProgressDialog.show(this, "Suche Orte", "Bitte warten...");
+        mDialog = ProgressDialog.show(this, "Suche Zeiten", "Bitte warten...");
         getTimes("http://transport.opendata.ch/v1/connections?from="+StartOrt+"&to="+ZielOrt+"&limit=3");
     }
     public void getTimes(String url){
         new AsyncTask<String, String, String>(){
             @Override
-            protected String doInBackground(String[] badi) {
+            protected String doInBackground(String[] times) {
                 String msg = "";
                 try{
-                    URL url = new URL(badi[0]);
+                    URL url = new URL(times[0]);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     int code = conn.getResponseCode();
                     mDialog.dismiss();
@@ -96,31 +69,34 @@ public class SelectTime extends AppCompatActivity {
         }.execute(url);
     }
     private void parseJson(String jsonstring){
-        TextView sz1 = (TextView) findViewById(R.id.StartZeit1);
-        TextView zz1 = (TextView) findViewById(R.id.EndZeit1);
-        TextView rz = (TextView) findViewById(R.id.Dauer1);
 
         String start = "";
         String ende = "";
 
+        ArrayAdapter times = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         try {
             JSONObject  jsonRootObject = new JSONObject(jsonstring);
 
-            //Get the instance of JSONArray that contains JSONObjects
-            JSONArray jsonArray = jsonRootObject.optJSONArray("from");
-            JSONArray jsonArray2 = jsonRootObject.optJSONArray("to");
+            JSONArray jsonArray = jsonRootObject.optJSONArray("connections");
 
-            //Iterate the jsonArray and print the info of JSONObjects
             for(int i=0; i < jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
 
-                start += jsonObject.optString("departure").toString();
+                String from = jsonObject.get("from").toString();
+                String to = jsonObject.get("to").toString();
+                String duration = jsonObject.get("duration").toString();
 
-                ende += jsonObject2.optString("arrival").toString();
+                JSONObject fromtime = new JSONObject(from);
+                JSONObject totime = new JSONObject(to);
+
+                start = fromtime.get("departure").toString();
+                ende = totime.get("arrival").toString();
+
+                times.add(start+" "+ende+" "+duration);
+
+                ListView zeit = (ListView) findViewById(R.id.zeiten);
+                zeit.setAdapter(times);
             }
-            sz1.setText(start);
-            zz1.setText(ende);
         } catch (JSONException e) {e.printStackTrace();}
     }
 }
