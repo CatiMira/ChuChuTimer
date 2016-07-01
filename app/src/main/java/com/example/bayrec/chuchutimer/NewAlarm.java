@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,7 @@ public class NewAlarm extends AppCompatActivity {
     private static String ZielOrtZeit;
     private static String Datum;
     private static String Dauer;
+    private static String LosLaufen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,8 @@ public class NewAlarm extends AppCompatActivity {
         EditText et = (EditText) findViewById(R.id.NeedTime);
         int value = Integer.valueOf(String.valueOf(et.getText()));
 
+        LosLaufen = et.getText().toString();
+
         String[] temp =  spliteTime(StartOrtZeit);
         int hour = Integer.valueOf(temp[0]);
         int minute = Integer.valueOf(temp[1]);
@@ -88,14 +92,13 @@ public class NewAlarm extends AppCompatActivity {
         saveAlarm(StartOrt, ZielOrt, StartOrtZeit, ZielOrtZeit, Dauer, Datum, combinedDate);
 
         Intent intent = new Intent( NewAlarm.this, MainActivity.class);
-        intent.putExtra("LaufZeit", value);
         this.startActivity(intent);
     }
 
     public void saveAlarm(String StartOrt, String ZielOrt, String StartOrtZeit, String ZielOrtZeit, String Dauer, String Datum, String combinedDate){
         SharedPreferences preferences = getSharedPreferences("app_name", Context.MODE_PRIVATE);
 
-        String alarm = "\n"+Datum+"\n"+StartOrt+" - "+ZielOrt+"\n"+StartOrtZeit+" - "+ZielOrtZeit+"Dauer: "+Dauer+"\nWecker: "+combinedDate+"\n";
+        String alarm = "\n"+Datum+"\n"+StartOrt+" - "+ZielOrt+"\n"+StartOrtZeit+" - "+ZielOrtZeit+"Dauer: "+Dauer+"\nWecker: "+combinedDate+"\n"+LosLaufen+" min"+"\n";
 
         int anzahlWecker = preferences.getInt("Wecker", 0);
         anzahlWecker++;
