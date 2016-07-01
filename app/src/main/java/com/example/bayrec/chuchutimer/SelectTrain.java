@@ -9,24 +9,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.util.Calendar;
-import java.util.Timer;
 
 public class SelectTrain extends AppCompatActivity
 {
     private String departure, arrival;
     private int year, month, day;
     private int hour, minute;
-    // static final int DIALOG_ID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,7 +41,7 @@ public class SelectTrain extends AppCompatActivity
         UpdateDate(year, month, day);
         UpdateTime(hour, minute);
     }
-
+    // Methode beim klicken auf den Suchen Button
     public void checkTrain(View v)
     {
         EditText et = (EditText) findViewById(R.id.FromEditText);
@@ -71,7 +65,7 @@ public class SelectTrain extends AppCompatActivity
         else
             searchTrains(v);
     }
-
+    // wenn die Eingabefelder nicht leer sind
     public void searchTrains(View v){
         Intent intent = new Intent(SelectTrain.this, SelectTime.class);
 

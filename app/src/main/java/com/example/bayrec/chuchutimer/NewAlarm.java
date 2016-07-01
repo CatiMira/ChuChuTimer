@@ -27,15 +27,16 @@ import java.util.regex.Pattern;
 
 public class NewAlarm extends AppCompatActivity {
 
-    private static String StartOrt;
-    private static String ZielOrt;
-    private static String StartOrtZeit;
-    private static String ZielOrtZeit;
-    private static String Datum;
-    private static String Dauer;
-    private static String LosLaufen;
+    private static String StartPlace;
+    private static String DestinationPlace;
+    private static String StartPlaceTime;
+    private static String DestinationPlaceTime;
+    private static String Date;
+    private static String Duration;
+    private static String Walk;
     private PendingIntent pendingIntent;
 
+    // Fügt dan TextViews die Texte hinzu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,44 +47,48 @@ public class NewAlarm extends AppCompatActivity {
         String Jahr = intent.getStringExtra("jahr");
         String Monat = intent.getStringExtra("monat");
         String Tag = intent.getStringExtra("tag");
-        Datum = Jahr+"-"+Monat+"-"+Tag;
-        Dauer = intent.getStringExtra("dauer");
+        Date = Jahr+"-"+Monat+"-"+Tag;
+        Duration = intent.getStringExtra("dauer");
 
         String zeiten = intent.getStringExtra("zeiten");
-        StartOrt = intent.getStringExtra("startort");
-        ZielOrt = intent.getStringExtra("zielort");
+        StartPlace = intent.getStringExtra("startort");
+        DestinationPlace = intent.getStringExtra("zielort");
 
         String[] temp = splitDate(zeiten);
-        StartOrtZeit = temp[0];
-        ZielOrtZeit = temp[1];
+        StartPlaceTime = temp[0];
+        DestinationPlaceTime = temp[1];
 
         TextView so = (TextView) findViewById(R.id.Start);
-        so.setText(StartOrt);
+        so.setText(StartPlace);
         TextView zo = (TextView) findViewById(R.id.Ziel);
-        zo.setText(ZielOrt);
+        zo.setText(DestinationPlace);
         TextView soz = (TextView) findViewById(R.id.StartZeit);
-        soz.setText(StartOrtZeit);
+        soz.setText(StartPlaceTime);
         TextView zoz = (TextView) findViewById(R.id.EndZeit);
-        zoz.setText(ZielOrtZeit);
+        zoz.setText(DestinationPlaceTime);
     }
 
+    // Methode um das Datum zu trennen
     private String[] splitDate(String text) {
         String[] temp = text.split(Pattern.quote("Dauer"));
         return temp[0].split(Pattern.quote(" - "));
     }
 
+    // Methode um die Zeit zu trennen
     private String[] spliteTime(String text){
 
         return text.split(Pattern.quote(":"));
     }
 
+    // Methode wenn man auf den Speichern Button klickt
+    // Wandelt die Dauer um und Speichert die Daten
     public void saveOnClick(View v){
         EditText et = (EditText) findViewById(R.id.NeedTime);
         int value = Integer.valueOf(String.valueOf(et.getText()));
 
-        LosLaufen = et.getText().toString();
+        Walk = et.getText().toString();
 
-        String[] temp =  spliteTime(StartOrtZeit);
+        String[] temp =  spliteTime(StartPlaceTime);
         int hour = Integer.valueOf(temp[0]);
         int minute = Integer.valueOf(temp[1]);
         minute += hour*60;
@@ -95,32 +100,37 @@ public class NewAlarm extends AppCompatActivity {
         hour /=60;
         String combinedDate = combine(hour, minute);
 
-        doAlarm(hour, minute, Datum);
+        // Speichern der Daten
+        saveAlarm(StartPlace, DestinationPlace, StartPlaceTime, DestinationPlaceTime, Duration, Date, combinedDate);
 
-        saveAlarm(StartOrt, ZielOrt, StartOrtZeit, ZielOrtZeit, Dauer, Datum, combinedDate);
+        // Initialisierung des Alarms
+        doAlarm(hour, minute, Date);
 
         Intent intent = new Intent( NewAlarm.this, MainActivity.class);
         this.startActivity(intent);
     }
 
-    public void saveAlarm(String StartOrt, String ZielOrt, String StartOrtZeit, String ZielOrtZeit, String Dauer, String Datum, String combinedDate){
+    // den Alarm in den SharedPreferences speichern
+    public void saveAlarm(String StartPlace, String DestinationPlace, String StartPlaceTime, String DestinationPlaceTime, String Duration, String Date, String combinedDate){
         SharedPreferences preferences = getSharedPreferences("app_name", Context.MODE_PRIVATE);
 
-        String alarm = "\n"+Datum+"\n"+StartOrt+" - "+ZielOrt+"\n"+StartOrtZeit+" - "+ZielOrtZeit+"Dauer: "+Dauer+"\nWecker: "+combinedDate+"\n"+LosLaufen+" min"+"\n";
+        String alarm = "\n"+Date+"\n"+StartPlace+" - "+DestinationPlace+"\n"+StartPlaceTime+" - "+DestinationPlaceTime+"Dauer: "+Duration+"\nWecker: "+combinedDate+"\n"+Walk+" min"+"\n";
 
-        int anzahlWecker = preferences.getInt("Wecker", 0);
-        anzahlWecker++;
+        int numberOfringers = preferences.getInt("Ringer", 0);
+        numberOfringers++;
         SharedPreferences.Editor editor = preferences.edit();
 
-        editor.putString(String.valueOf(anzahlWecker), alarm);
-        editor.putInt("Wecker", anzahlWecker);
+        editor.putString(String.valueOf(numberOfringers), alarm);
+        editor.putInt("Ringer", numberOfringers);
         editor.commit();
     }
 
+    // die Loslaufzeit kombinieren
     private String combine(int hour, int minute){
-        return hour + ":" + minute;
+        return hour+":"+minute;
     }
 
+    // Initialisiert den Alarm nach Datum und Zeit
     private void doAlarm(int hour, int minute, String date) {
         String[] spliteDate = date.split(Pattern.quote("-"));
 
@@ -138,6 +148,6 @@ public class NewAlarm extends AppCompatActivity {
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000*60*60*24, pendingIntent);
 
-        Toast.makeText(NewAlarm.this,"Start Alarm", Toast.LENGTH_LONG).show();
+        Toast.makeText(NewAlarm.this,"Alarm aktiviert", Toast.LENGTH_LONG).show();
     }
 }

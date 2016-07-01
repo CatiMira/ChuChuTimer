@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/Start"
+        android:id="@+id/place"
         android:layout_marginRight="10dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -23,27 +23,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/StartZeit"
-        android:layout_marginTop="39dp"
-        android:layout_below="@+id/Start"
+        android:id="@+id/time"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/place"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/reiseZeit"
-        android:layout_below="@+id/StartZeit"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp" />
+        android:id="@+id/driveTime"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/place" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/laufZeit"
-        android:layout_below="@+id/reiseZeit"
+        android:id="@+id/walkTime"
+        android:layout_below="@+id/driveTime"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="76dp" />
+        android:layout_marginTop="48dp" />
 
 </RelativeLayout>
