@@ -11,11 +11,7 @@ import android.os.IBinder;
 
 import com.example.bayrec.chuchutimer.MainActivity;
 
-/**
- * Created by bpeltd on 01.07.2016.
- */
 public class NotifyService extends Service {
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -26,15 +22,15 @@ public class NotifyService extends Service {
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationManager mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(this.getApplicationContext(), NewAlarm.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,0);
 
         Notification mNotify = new Notification.Builder(this)
-                .setContentTitle("Steps")
-                .setContentText("Log your steps for today")
+                .setContentTitle("IHR ZUG")
+                .setContentText("Sie müssen auf den Zug")
                 .setContentIntent(pIntent)
                 .setSound(sound)
-                .addAction(0, "YOUR TRAIN!!!", pIntent)
+                .addAction(0, "IHR ZUG", pIntent)
                 .build();
         mNM.notify(1, mNotify);
     }

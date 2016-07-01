@@ -1,5 +1,7 @@
 package com.example.bayrec.chuchutimer;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 public class NewAlarm extends AppCompatActivity {
@@ -31,6 +34,8 @@ public class NewAlarm extends AppCompatActivity {
     private static String Datum;
     private static String Dauer;
     private static String LosLaufen;
+    private PendingIntent pendingIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +76,7 @@ public class NewAlarm extends AppCompatActivity {
 
         return text.split(Pattern.quote(":"));
     }
+
     public void saveOnClick(View v){
         EditText et = (EditText) findViewById(R.id.NeedTime);
         int value = Integer.valueOf(String.valueOf(et.getText()));
@@ -88,6 +94,8 @@ public class NewAlarm extends AppCompatActivity {
         hour -= minute;
         hour /=60;
         String combinedDate = combine(hour, minute);
+
+        doAlarm(hour, minute, Datum);
 
         saveAlarm(StartOrt, ZielOrt, StartOrtZeit, ZielOrtZeit, Dauer, Datum, combinedDate);
 
@@ -110,6 +118,26 @@ public class NewAlarm extends AppCompatActivity {
     }
 
     private String combine(int hour, int minute){
-        return hour+":"+minute;
+        return hour + ":" + minute;
+    }
+
+    private void doAlarm(int hour, int minute, String date) {
+        String[] spliteDate = date.split(Pattern.quote("-"));
+
+        Intent myIntent = new Intent(this, NotifyService.class);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        pendingIntent = PendingIntent.getService(this, 0, myIntent, 0);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.HOUR, hour);
+        calendar.set(Calendar.YEAR, Integer.valueOf(spliteDate[0]));
+        calendar.set(Calendar.MONTH, Integer.valueOf(spliteDate[1])-1);
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(spliteDate[2]));
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000*60*60*24, pendingIntent);
+
+        Toast.makeText(NewAlarm.this,"Start Alarm", Toast.LENGTH_LONG).show();
     }
 }
