@@ -1,15 +1,16 @@
 package com.example.bayrec.chuchutimer;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.regex.Pattern;
+
 public class ShowAlarm extends AppCompatActivity {
 
     private static String StartOrt;
-    private static String ZielOrt;
     private static String StartOrtZeit;
-    private static String ZielOrtZeit;
     private static String ReiseZeit;
     private static String LaufZeit;
     @Override
@@ -17,17 +18,18 @@ public class ShowAlarm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_alarm);
 
+        Intent intent = getIntent();
+        String alles = intent.getStringExtra("alles");
+        StartOrt = intent.getStringExtra("Orte");
+        StartOrtZeit = intent.getStringExtra("Zeit");
+        ReiseZeit = intent.getStringExtra("ReiseZeit");
+        LaufZeit = intent.getStringExtra("LaufZeit");
+
         TextView so = (TextView) findViewById(R.id.Start);
         so.setText(StartOrt);
-        TextView zo = (TextView) findViewById(R.id.Ziel);
-        zo.setText(ZielOrt);
         TextView soz = (TextView) findViewById(R.id.StartZeit);
         soz.setText(StartOrtZeit);
-        TextView zoz = (TextView) findViewById(R.id.EndZeit);
-        zoz.setText(ZielOrtZeit);
-        TextView rz = (TextView) findViewById(R.id.reiseZeit);
-        rz.setText(LaufZeit);
-        TextView lz = (TextView) findViewById(R.id.laufZeit);
+        TextView lz = (TextView) findViewById(R.id.reiseZeit);
         lz.setText(ReiseZeit);
     }
 }

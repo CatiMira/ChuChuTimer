@@ -1,14 +1,24 @@
 package com.example.bayrec.chuchutimer;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class NewAlarm extends AppCompatActivity {
@@ -75,29 +85,28 @@ public class NewAlarm extends AppCompatActivity {
         hour /=60;
         String combinedDate = combine(hour, minute);
 
-        Alarm alarm = new Alarm(StartOrt, ZielOrt, StartOrtZeit, ZielOrtZeit, Dauer, Datum, combinedDate);
-        alarm.saveAlarm();
+        saveAlarm(StartOrt, ZielOrt, StartOrtZeit, ZielOrtZeit, Dauer, Datum, combinedDate);
 
         Intent intent = new Intent( NewAlarm.this, MainActivity.class);
+        intent.putExtra("LaufZeit", value);
         this.startActivity(intent);
+    }
 
-        // hour = hourCheck(hour);
-        // minute = minuteCheck(minute);
+    public void saveAlarm(String StartOrt, String ZielOrt, String StartOrtZeit, String ZielOrtZeit, String Dauer, String Datum, String combinedDate){
+        SharedPreferences preferences = getSharedPreferences("app_name", Context.MODE_PRIVATE);
+
+        String alarm = "\n"+Datum+"\n"+StartOrt+" - "+ZielOrt+"\n"+StartOrtZeit+" - "+ZielOrtZeit+"Dauer: "+Dauer+"\nWecker: "+combinedDate+"\n";
+
+        int anzahlWecker = preferences.getInt("Wecker", 0);
+        anzahlWecker++;
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString(String.valueOf(anzahlWecker), alarm);
+        editor.putInt("Wecker", anzahlWecker);
+        editor.commit();
     }
 
     private String combine(int hour, int minute){
         return hour+":"+minute;
     }
-    /*
-    private int hourCheck(int hour){
-        if(hour < 0)
-            return 24 + hour;
-        return hour;
-    }
-    private int minuteCheck(int minute){
-        if(minute < 0)
-            return 60 + minute;
-        return minute;
-    }
-    */
 }
