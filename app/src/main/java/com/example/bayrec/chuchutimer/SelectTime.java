@@ -32,6 +32,7 @@ public class SelectTime extends AppCompatActivity {
     private static String Tag;
     private static String Stunde;
     private static String Minute;
+    private static String duration;
 
     String start = "";
     String ende = "";
@@ -100,7 +101,7 @@ public class SelectTime extends AppCompatActivity {
 
                 String from = jsonObject.get("from").toString();
                 String to = jsonObject.get("to").toString();
-                String duration = jsonObject.get("duration").toString();
+                duration = jsonObject.get("duration").toString();
 
                 JSONObject fromtime = new JSONObject(from);
                 JSONObject totime = new JSONObject(to);
@@ -127,6 +128,10 @@ public class SelectTime extends AppCompatActivity {
                         intent.putExtra("zeiten", selected);
                         intent.putExtra("startort", StartOrt);
                         intent.putExtra("zielort", ZielOrt);
+                        intent.putExtra("jahr", Jahr);
+                        intent.putExtra("monat", Monat);
+                        intent.putExtra("tag", Tag);
+                        intent.putExtra("dauer", duration);
                         startActivity(intent);
                     }
                 };

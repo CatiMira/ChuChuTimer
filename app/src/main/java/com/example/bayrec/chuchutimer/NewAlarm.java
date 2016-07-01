@@ -1,6 +1,7 @@
 package com.example.bayrec.chuchutimer;
 
 import android.content.Intent;
+import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,12 +17,21 @@ public class NewAlarm extends AppCompatActivity {
     private static String ZielOrt;
     private static String StartOrtZeit;
     private static String ZielOrtZeit;
+    private static String Datum;
+    private static String Dauer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_alarm);
 
         Intent intent = getIntent();
+
+        String Jahr = intent.getStringExtra("jahr");
+        String Monat = intent.getStringExtra("monat");
+        String Tag = intent.getStringExtra("tag");
+        Datum = Jahr+"-"+Monat+"-"+Tag;
+        Dauer = intent.getStringExtra("dauer");
+
         String zeiten = intent.getStringExtra("zeiten");
         StartOrt = intent.getStringExtra("startort");
         ZielOrt = intent.getStringExtra("zielort");
@@ -63,7 +73,13 @@ public class NewAlarm extends AppCompatActivity {
         minute = minute % 60;
         hour -= minute;
         hour /=60;
-        String combineDate = combine(hour, minute);
+        String combinedDate = combine(hour, minute);
+
+        Alarm alarm = new Alarm(StartOrt, ZielOrt, StartOrtZeit, ZielOrtZeit, Dauer, Datum, combinedDate);
+        alarm.saveAlarm();
+
+        Intent intent = new Intent( NewAlarm.this, MainActivity.class);
+        this.startActivity(intent);
 
         // hour = hourCheck(hour);
         // minute = minuteCheck(minute);
